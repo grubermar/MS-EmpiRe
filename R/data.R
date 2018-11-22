@@ -83,9 +83,9 @@ read.standard <- function(f, sample.mapping=NULL, signal_pattern="c", sep="\t", 
 #' @export
 read.RNAseq.simple <- function(dir, expression="exprs.txt", pheno="p_data.txt", feature="f_data.txt", sep="\t")
 {
-  x <- read.csv(expression,  sep="\t", header=F)
-  y <- read.csv(pheno, sep="\t", header=F)
-  z <- read.csv(feature, sep="\t", header=F)
+  x <- read.csv(file.path(dir, expression),  sep="\t", header=F)
+  y <- read.csv(file.path(dir, pheno), sep="\t", header=F)
+  z <- read.csv(file.path(dir, feature), sep="\t", header=F)
   
   rownames(y) <- y[,1]
   rownames(z) <- z[,1]
