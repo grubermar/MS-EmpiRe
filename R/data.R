@@ -81,6 +81,29 @@ read.standard <- function(f, sample.mapping=NULL, signal_pattern="c", sep="\t", 
 }
 
 #' @export
+read.RNAseq.simple <- function(dir, expression="exprs.txt", pheno="p_data.txt", feature="f_data.txt", sep="\t")
+{
+  x <- read.csv(expression,  sep="\t", header=F)
+  y <- read.csv(pheno, sep="\t", header=F)
+  z <- read.csv(feature, sep="\t", header=F)
+  
+  rownames(y) <- y[,1]
+  rownames(z) <- z[,1]
+  
+  y$V1 <- NULL
+  
+  colnames(y) <- c("condition")
+  colnames(z) <- c("prot.id")
+  
+  rownames(x) <- rownames(z)
+  colnames(x) <- rownames(y)
+  
+  data <- Biobase::ExpressionSet(as.matrix(x), Biobase::AnnotatedDataFrame(y), Biobase::AnnotatedDataFrame(z))
+  return(data)
+}
+
+
+#' @export
 read.EB <- function(dir, expression="exprs.txt", pheno="p_data.txt", feature="f_data.txt", sep="\t")
 {
   data <- Biobase::readExpressionSet(exprsFile = file.path(dir, expression),
